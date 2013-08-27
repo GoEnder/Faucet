@@ -4,3 +4,9 @@
 [submodule "base/CraftBukkit"]
 	path = base/CraftBukkit
 	url = git@github.com:Bukkit/CraftBukkit.git
+[submodule "patches/Spigot"]
+	path = patches/Spigot
+	url = git@github.com:SpigotMC/Spigot.git
+[submodule "patches/SportBukkit"]
+	path = patches/SportBukkit
+	url = git@github.com:OvercastNetwork/SportBukkit.git

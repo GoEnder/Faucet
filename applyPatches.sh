@@ -1,47 +1,36 @@
 #!/bin/bash
 
-ORIG_PWD="$(pwd)"
-cd "$(dirname "$0")"
-echo "  Rebuilding Forked projects.... "
+basedir=`pwd`
+echo "Rebuilding Forked projects.... "
 
-function applyFaucetPatches {
-    what=base/$1
-    target=build/$2
-    patches=patches/Faucet/$1
-
-    cd $what
+function applyPatch {
+    what=$1
+    target=$2
+    cd $basedir/$what
     git branch -f upstream >/dev/null
-    cd ../../
-    if [ ! -d  $target ]; then
-        git clone $what $target -b upstream
-    fi
 
-    cd $target
-    echo "  Resetting $target to $what..."
+    cd $basedir
+    if [ ! -d  "$basedir/$target" ]; then
+        git clone $1 patched/$target -b upstream
+    fi
+    cd "$basedir/$target"
+    echo "Resetting $target to $what..."
     git remote rm upstream 2>/dev/null 2>&1
-    git remote add upstream ../../$what >/dev/null 2>&1
+    git remote add upstream ../$what >/dev/null 2>&1
     git checkout master >/dev/null 2>&1
     git fetch upstream >/dev/null 2>&1
     git reset --hard upstream/upstream
-
     echo "  Applying patches to $target..."
     git am --abort
-
-    if !(git am --3way ../../$patches/*.patch); then
+    git am --3way $basedir/patches/Faucet/${what}/*.patch
+    if [ "$?" != "0" ]; then
         echo "  Something did not apply cleanly to $target."
         echo "  Please review above details and finish the apply then"
         echo "  save the changes with rebuildPatches.sh"
-        cd "$ORIG_PWD"
-        exit $?
+        exit 1
     else
         echo "  Patches applied cleanly to $target"
     fi
-
-    cd ../..
 }
 
-applyFaucetPatches Bukkit Faucet-API
-applyFaucetPatches CraftBukkit Faucet
-
-
-cd "$ORIG_PWD"
+applyPatch Faucet-API patched/Faucet-API && applyPatch Faucet patched/Faucet

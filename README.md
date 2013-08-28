@@ -16,4 +16,4 @@ Changes being made
 Installation and Usage 
 -----------
 Faucet runs just like the craftbukkit.jar and spigot.jar  
-An already pre-compiled version is avaliable [here for download](http://gatesofender.net/job/Faucet/)
+An already pre-compiled version is avaliable [here for download](http://ci.gatesofender.net/job/Faucet/)

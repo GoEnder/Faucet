@@ -16,7 +16,7 @@ function applyPatch {
     cd "$basedir/$target"
     echo "Resetting $target to $what..."
     git remote rm upstream 2>/dev/null 2>&1
-    git remote add upstream ../$what >/dev/null 2>&1
+    git remote add upstream ../patched/$what >/dev/null 2>&1
     git checkout master >/dev/null 2>&1
     git fetch upstream >/dev/null 2>&1
     git reset --hard upstream/upstream
